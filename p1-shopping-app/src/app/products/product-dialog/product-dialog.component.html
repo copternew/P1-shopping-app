@@ -1,0 +1,42 @@
+<div class="modal modal-dialog-centered" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">เพิ่มสินค้า</h5>
+      <button type="button" class="btn-close" (click)="onClose()"></button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="productForm">
+        <div class="mb-3">
+          <label for="productCode" class="form-label">รหัสสินค้า</label>
+          <input
+            type="text"
+            id="productCode"
+            class="form-control"
+            formControlName="code"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="productName" class="form-label">ชื่อสินค้า</label>
+          <input
+            type="text"
+            id="productName"
+            class="form-control"
+            formControlName="name"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="productPrice" class="form-label">ราคา</label>
+          <input
+            type="number"
+            id="productPrice"
+            class="form-control"
+            formControlName="price"
+            required
+          />
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="onClose()">

@@ -1,0 +1,34 @@
+<div class="container mt-5">
+    <div class="d-flex justify-content-between mb-4">
+      <h2>รายการสินค้า</h2>
+      <button class="btn btn-success" (click)="openAddProductDialog()">เพิ่มสินค้า</button>
+    </div>
+  
+    <div class="mb-3">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="ค้นหาด้วยชื่อหรือรหัสสินค้า"
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearch()"
+      />
+    </div>
+  
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>รหัสสินค้า</th>
+          <th>ชื่อสินค้า</th>
+          <th>ราคา</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of filteredProducts">
+          <td>{{ product.code }}</td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.price | currency:'THB' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
