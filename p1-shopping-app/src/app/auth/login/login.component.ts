@@ -29,11 +29,12 @@ export class LoginComponent {
       const { email, password } = this.loginForm.value;
 
       this.authService.login(email, password).then(() => {
-        this.router.navigate(['/home']);  // เปลี่ยนเส้นทางไปหน้า home หรือหน้าอื่นๆ
+        this.router.navigate(['/products-list']);  // เปลี่ยนเส้นทางไปหน้า home หรือหน้าอื่นๆ
       }).catch((error) => {
         console.error(error);
         alert('เกิดข้อผิดพลาดในการเข้าสู่ระบบ');
       });
     }
   }
+
 }

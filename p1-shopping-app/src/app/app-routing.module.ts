@@ -6,6 +6,7 @@ import { ProductListComponent } from './products/product-list/product-list.compo
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
+  { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'products-list', component: ProductListComponent }
 ];
