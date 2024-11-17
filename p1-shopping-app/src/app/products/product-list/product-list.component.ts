@@ -3,6 +3,7 @@ import { ProductService, Product } from '../../services/product.service';
 import { AuthService } from '../../services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import Swal from 'sweetalert2';
 
 declare var bootstrap: any; // Declare bootstrap for modal usage
 
@@ -26,10 +27,7 @@ export class ProductListComponent {
     // Fetch products on component initialization
     this.productService.getProducts().subscribe((products) => {
       this.products = products;
-      this.filteredProducts = products;
-      console.log('Products:', products);
-      console.log('Filtered Products:', this.filteredProducts.length === 0);
-      debugger
+      this.filteredProducts = products.sort((a, b) => a.productId.localeCompare(b.productId));
     });
 
     // Initialize the add product form
@@ -87,6 +85,11 @@ export class ProductListComponent {
             });
 
             console.log('New Product Added:', { productId, productName, productPrice });
+            Swal.fire({
+              icon: 'success',
+              title: 'Success',
+              text: 'เพื่มสินค้าสําเร็จ',
+            })
 
             // รีเซ็ตฟอร์มและปิด Modal
             this.addProductForm.reset();
@@ -100,6 +103,42 @@ export class ProductListComponent {
         });
     } else {
       console.error('Form is invalid!');
+    }
+  }
+
+  onDeleteProduct(product: any): void {
+    if (confirm(`คุณต้องการลบสินค้า ${product.productName} หรือไม่?`)) {
+      this.firestore
+        .collection('products', ref => ref.where('productId', '==', product.productId))
+        .get()
+        .toPromise()
+        .then(querySnapshot => {
+          // ตรวจสอบว่า querySnapshot ไม่ใช่ undefined และไม่ว่างเปล่า
+          if (querySnapshot && !querySnapshot.empty) {
+            const docId = querySnapshot.docs[0].id; // ดึง docId ของเอกสาร
+            return this.firestore.collection('products').doc(docId).delete();
+          } else {
+            throw new Error('ไม่พบสินค้าที่ต้องการลบ');
+          }
+        })
+        .then(() => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'ลบสินค้าสําเร็จ',
+          })
+          // อัปเดต filteredProducts หลังจากลบ
+          this.filteredProducts = this.filteredProducts.filter(p => p.productId !== product.productId);
+        })
+        .catch(error => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'ไม่สามารถลบสินค้าได้: ' + error.message,
+          })
+          console.error('เกิดข้อผิดพลาดในการลบสินค้า:', error);
+          alert('ไม่สามารถลบสินค้าได้: ' + error.message);
+        });
     }
   }
 

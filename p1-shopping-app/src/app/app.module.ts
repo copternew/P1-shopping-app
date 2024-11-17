@@ -14,6 +14,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { ProductListComponent } from './products/product-list/product-list.component';
 import { ProductDialogComponent } from './products/product-dialog/product-dialog.component';
+import { NavbarComponent } from './navbar/navbar.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -21,6 +22,7 @@ import { ProductDialogComponent } from './products/product-dialog/product-dialog
     RegisterComponent,
     ProductListComponent,
     ProductDialogComponent,
+    NavbarComponent,
     
     
   ],

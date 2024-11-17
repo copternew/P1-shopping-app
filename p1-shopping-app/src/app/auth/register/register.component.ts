@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-register',
@@ -33,6 +34,11 @@ export class RegisterComponent {
       // ตรวจสอบว่า password กับ confirmPassword ตรงกันหรือไม่
       if (password === confirmPassword) {
         this.authService.register(email, password).then(() => {
+          Swal.fire({
+            icon: 'success',
+            title: 'สมัครสมาชิกสําเร็จ',
+            text: 'คุณได้สมัครสมาชิกเรียบร้อยแล้ว',
+          })
           this.router.navigate(['/login']);
         }).catch((error) => {
           console.error(error);
