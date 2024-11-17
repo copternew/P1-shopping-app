@@ -1,2 +1,2 @@
-P1-shopping-app/src/environments/*
-!P1-shopping-app/src/environments/environment.example.ts
+/src/environments/*
+!/src/environments/environment.example.ts
