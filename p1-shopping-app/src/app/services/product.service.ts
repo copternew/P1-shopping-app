@@ -3,10 +3,9 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 
 export interface Product {
-    id?: string; // ID จะไม่ถูกบังคับในตอนเพิ่มสินค้า
-    code: string; // รหัสสินค้า (ต้องไม่ซ้ำ)
-    name: string; // ชื่อสินค้า
-    price: number; // ราคา
+    productId: string; // รหัสสินค้า (ต้องไม่ซ้ำ)
+    productName: string; // ชื่อสินค้า
+    productPrice: number; // ราคา
   }
 
   

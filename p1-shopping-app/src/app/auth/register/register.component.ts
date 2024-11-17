@@ -24,8 +24,9 @@ export class RegisterComponent {
     });
   }
 
-  onSubmit() {
-    console.log(this.registerForm.value); // ตรวจสอบค่าของฟอร์มใน console
+  onSubmit(event: Event) {
+    event.preventDefault();
+
     if (this.registerForm.valid) {
       const { email, password, confirmPassword } = this.registerForm.value;
       

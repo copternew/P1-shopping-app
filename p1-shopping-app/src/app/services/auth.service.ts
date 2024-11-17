@@ -1,14 +1,32 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { User } from 'firebase/auth';
+import { map } from 'rxjs/operators';
+import Swal from 'sweetalert2';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-  constructor(private afAuth: AngularFireAuth, private router: Router) {}
+  user$: Observable<User | null>;
 
-  // ฟังก์ชันสำหรับการสมัครสมาชิก (register)
+  constructor(private afAuth: AngularFireAuth, private router: Router) {
+    this.user$ = this.afAuth.authState.pipe(
+      map((user) => {
+        if (user) {
+          // Clone user object and update providerData
+          return {
+            ...user,
+            providerData: user.providerData.filter((data) => data !== null),
+          } as User;
+        }
+        return null;
+      })
+    );
+  }
+
   register(email: string, password: string) {
     return this.afAuth.createUserWithEmailAndPassword(email, password)
       .then((userCredential) => {
@@ -21,7 +39,6 @@ export class AuthService {
       });
   }
 
-  // ฟังก์ชันสำหรับการเข้าสู่ระบบ (login)
   login(email: string, password: string) {
     return this.afAuth.signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
@@ -34,8 +51,14 @@ export class AuthService {
       });
   }
 
-  // ฟังก์ชันสำหรับออกจากระบบ (logout)
   logout() {
-    return this.afAuth.signOut();
+    return this.afAuth.signOut().then(() => {
+      Swal.fire({
+        icon: 'success',
+        title: 'Logout Successful',
+        text: 'You have been logged out.',
+      })
+      this.router.navigate(['/login']);
+    });
   }
 }
